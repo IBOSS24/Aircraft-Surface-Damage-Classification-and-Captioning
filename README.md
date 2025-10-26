@@ -59,5 +59,13 @@ This project demonstrates how AI can automate damage assessment by:
 - Generated meaningful captions describing aircraft components and visible damage.
 - Created concise summaries integrating both classification and captioning insights.
 
-Example Output:
-.
+## 🖼️ Example Output
+
+Below is an example of the model’s output on an aircraft image:
+
+![Aircraft Damage Example](image/Dent-predicted.png)
+
+**Prediction:** Dent  
+**Caption:** "A close-up view of an aircraft wing with visible dent damage."  
+**Summary:** "this is a detailed photo showing the damage of the nose of a b - 17 bomber, requiring inspection."
+
