@@ -17,7 +17,58 @@ This project demonstrates how AI can automate damage assessment by:
 2. **Generating descriptive captions** and a **summary** using a pretrained BLIP transformer model.
 
 ---
+## 🛠️ Installation  
 
+### **Prerequisites**  
+
+Before setting up the project, ensure you have the following installed on your system:  
+
+- **Python 3.8+**  
+- **TensorFlow 2.17.1**  
+- **CUDA** *(optional, for GPU acceleration)*  
+- **pip** (Python package manager)  
+
+You can verify your Python version with:  
+```bash
+python --version
+```
+
+---
+
+### **Setup**  
+
+#### 1️⃣ Clone the repository  
+```bash
+git clone https://github.com/yourusername/aircraft-damage-classification.git
+cd aircraft-damage-classification
+```
+
+#### 2️⃣ Install dependencies  
+```bash
+pip install -r requirements.txt
+```
+
+> 💡 *Tip: If you’re using GPU acceleration, make sure your TensorFlow and CUDA versions are compatible. Refer to the official [TensorFlow GPU support guide](https://www.tensorflow.org/install/gpu).*  
+
+---
+## 💾 Dataset  
+
+> ⚠️ Dataset not included in the repository due to size restrictions.  
+You can structure your dataset as follows:
+```
+aircraft_damage_dataset_v1/
+  ├── train/
+  │   ├── dent/
+  │   └── crack/
+  ├── valid/
+  │   ├── dent/
+  │   └── crack/
+  └── test/
+      ├── dent/
+      └── crack/
+
+```
+---
 ## 🧠 Methodology
 
 ### 1. **Data Preprocessing**
