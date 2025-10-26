@@ -155,4 +155,6 @@ Framework: TensorFlow / Keras Team
 
 ---
 ## 📧 Contact
-**Mohammed BADR** ->www.linkedin.com/in/mohammed-e-a13664182
+
+- **Email**: [med.marin17@gmail.com](med.marin17.ad@gmail.com)
+- **LinkedIn**: [linkedin.com/Mohammed](https://www.linkedin.com/in/mohammed-e-a13664182/)
