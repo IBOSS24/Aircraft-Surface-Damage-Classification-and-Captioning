@@ -63,7 +63,7 @@ This project demonstrates how AI can automate damage assessment by:
 
 Below is an example of the model’s output on an aircraft image:
 
-![Aircraft Damage Example](image/Dent-predicted.png)
+![Aircraft Damage Example](https://github.com/IBOSS24/Aircraft-Surface-Damage-Classification-and-Captioning/blob/main/image/Dent-predicted%20.png)
 
 **Prediction:** Dent  
 **Caption:** "A close-up view of an aircraft wing with visible dent damage."  
