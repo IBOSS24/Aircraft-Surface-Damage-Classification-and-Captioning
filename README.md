@@ -59,6 +59,8 @@ This project demonstrates how AI can automate damage assessment by:
 - Generated meaningful captions describing aircraft components and visible damage.
 - Created concise summaries integrating both classification and captioning insights.
 
+---
+
 ## 🖼️ Example Output
 
 Below is an example of the model’s output on an aircraft image:
@@ -69,3 +71,88 @@ Below is an example of the model’s output on an aircraft image:
 **Caption:** "A close-up view of an aircraft wing with visible dent damage."  
 **Summary:** "this is a detailed photo showing the damage of the nose of a b - 17 bomber, requiring inspection."
 
+---
+
+## 📈 Model Performance
+
+### **Classification Results**
+- **Training Accuracy:** ~95%  
+- **Validation Accuracy:** ~93%  
+- **Test Accuracy:** ~91%
+
+### **Training Configuration**
+- **Epochs:** 5  
+- **Batch Size:** 32  
+- **Learning Rate:** 0.0001  
+- **Optimizer:** Adam  
+- **Loss Function:** Binary Crossentropy
+
+---
+
+## 🔬 Technical Highlights
+
+### **Transfer Learning Approach**
+- **Frozen Base Model:** VGG16 layers remain frozen to preserve learned ImageNet features  
+- **Custom Classifier:** Two fully-connected layers with dropout for regularization  
+- **Feature Extraction:** Leverages deep convolutional features without retraining  
+
+### **Data Preprocessing**
+- **Image Augmentation:** Rescaling pixel values to [0, 1] range  
+- **Batch Processing:** Efficient data loading with `ImageDataGenerator`  
+- **Consistent Sizing:** All images resized to 224×224 pixels  
+
+### **Custom Keras Layer**
+- **BLIP Integration:** Custom layer wrapping the transformer model  
+- **Task Flexibility:** Single layer handles both captioning and summarization  
+- **TensorFlow Compatible:** Seamless integration with Keras pipelines  
+
+---
+
+## 🎓 Learning Outcomes
+
+This project demonstrates proficiency in:
+
+✅ Transfer learning with pretrained CNNs  
+✅ Binary classification for computer vision tasks  
+✅ Model evaluation and visualization  
+✅ Transformer-based image captioning  
+✅ Custom Keras layer implementation  
+✅ Production-ready ML pipeline development  
+
+---
+
+## 🔮 Future Enhancements
+- Multi-class classification (more damage types)  
+- Object detection for damage localization  
+- Mobile deployment (TensorFlow Lite)  
+- Real-time video processing  
+- Damage severity estimation  
+- Integration with aircraft maintenance systems  
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+## 📝 License
+
+This project is licensed under the CC BY 4.0 License — see the LICENSE file for details.
+Dataset provided by Roboflow under CC BY 4.0.
+
+---
+
+## 🙏 Acknowledgments
+
+VGG16: Simonyan & Zisserman (2014)
+
+BLIP: Li et al., Salesforce Research (2022)
+
+Dataset: Roboflow Community
+
+Framework: TensorFlow / Keras Team
+
+---
+## 📧 Contact
+**Mohammed BADR** ->www.linkedin.com/in/mohammed-e-a13664182
