@@ -1,211 +1,138 @@
-# ✈️ Aircraft Surface Damage Classification and Captioning
+# ✈️ Aircraft Surface Damage Classification & Captioning
 
-This project combines **deep learning for image classification** and **vision-language modeling** to identify and describe aircraft surface damage such as **dents** and **cracks**.  
-It leverages **VGG16** (a pretrained CNN model) for damage detection and **BLIP Transformer** for automatic image captioning and summarization.
+Explore **dent-versus-crack classification with VGG16** and **image description with BLIP** in a notebook-based computer vision project.
 
----
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
+![Transformers](https://img.shields.io/badge/Transformers-173B57?style=flat-square)
 
-## 🚀 Project Overview
-
-The aviation industry requires quick and accurate detection of surface damage to ensure flight safety and reduce downtime.  
-This project demonstrates how AI can automate damage assessment by:
-
-1. **Classifying aircraft surface images** as either:
-   - `Dent`
-   - `Crack`
-
-2. **Generating descriptive captions** and a **summary** using a pretrained BLIP transformer model.
+[Overview](#-project-overview) · [Example](#-example-output) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [Author](#-author) · [Contact](#contact)
 
 ---
-## 🛠️ Installation  
 
-### **Prerequisites**  
+## 🎯 Project overview
 
-Before setting up the project, ensure you have the following installed on your system:  
+Visual inspection involves both recognizing damage and communicating what an image shows. This project explores those tasks through two complementary models: a binary surface-damage classifier and a pretrained image-captioning model.
 
-- **Python 3.8+**  
-- **TensorFlow 2.17.1**  
-- **CUDA** *(optional, for GPU acceleration)*  
-- **pip** (Python package manager)  
+The work is an **educational notebook prototype**. It connects transfer learning with vision-language generation, an approach I am interested in exploring further for equipment inspection and maritime maintenance.
 
-You can verify your Python version with:  
+## 🏆 Project highlights
+
+- **Transfer learning:** frozen ImageNet VGG16 features with a custom binary classifier.
+- **Image preparation:** 224 × 224 resizing and pixel rescaling through directory-based generators.
+- **Training workflow:** separate training, validation, and test directories, accuracy/loss curves, and test evaluation.
+- **Vision-language generation:** Salesforce BLIP produces prompted image descriptions.
+- **Framework integration:** a custom Keras layer invokes PyTorch text generation through `tf.py_function`.
+
+## 🖼️ Example output
+
+![Aircraft surface damage prediction example](image/Dent-predicted%20.png)
+
+The notebook explores classification and generated descriptions separately. A generated description should be checked against the image; it is not an inspection finding.
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart TD
+    A["Aircraft surface image"] --> B["Resize and rescale"]
+    B --> C["Frozen VGG16 features"]
+    C --> D["Dense classifier"]
+    D --> E["Dent or crack prediction"]
+    A --> F["BLIP processor and prompt"]
+    F --> G["Pretrained BLIP model"]
+    G --> H["Generated image description"]
+```
+
+### Training configuration
+
+| Setting | Notebook implementation |
+| --- | --- |
+| Image size | 224 × 224 RGB |
+| Feature extractor | VGG16, ImageNet weights, frozen layers |
+| Classifier | Two Dense 512 layers, each followed by Dropout 0.3; sigmoid output |
+| Optimizer | Adam, learning rate 0.0001 |
+| Loss | Binary cross-entropy |
+| Batch size / epochs | 32 / 5 |
+| Caption model | `Salesforce/blip-image-captioning-base` |
+
+The notebook's “caption” and “summary” modes use different prompts with the same BLIP model. The summary mode generates an image description rather than summarizing a maintenance report.
+
+## 🚀 Quick start
+
 ```bash
-python --version
+git clone https://github.com/IBOSS24/Aircraft-Surface-Damage-Classification-and-Captioning.git
+cd Aircraft-Surface-Damage-Classification-and-Captioning
+python -m venv .venv
 ```
 
----
+Activate with `source .venv/bin/activate` on Linux/macOS or `.\.venv\Scripts\Activate.ps1` in Windows PowerShell:
 
-### **Setup**  
-
-#### 1️⃣ Clone the repository  
 ```bash
-git clone https://github.com/yourusername/aircraft-damage-classification.git
-cd aircraft-damage-classification
+python -m pip install -r requirements.txt
+python -m pip install jupyter
+python -m jupyter notebook
 ```
 
-#### 2️⃣ Install dependencies  
-```bash
-pip install -r requirements.txt
-```
+Open the aircraft classification notebook from the file browser. Review the data-download cell before running it: it downloads an archive and removes an existing `aircraft_damage_dataset_v1` directory before extraction.
 
-> 💡 *Tip: If you’re using GPU acceleration, make sure your TensorFlow and CUDA versions are compatible. Refer to the official [TensorFlow GPU support guide](https://www.tensorflow.org/install/gpu).*  
+The dataset and pretrained weights require network access. The requirements specify TensorFlow 2.17.1 and Transformers 4.38.2, with some other dependencies unpinned; a clean installation has not been verified in this documentation update.
 
----
-## 💾 Dataset  
+## 📂 Repository guide
 
-> ⚠️ Dataset not included in the repository due to size restrictions.  
-You can structure your dataset as follows:
-```
-aircraft_damage_dataset_v1/
-  ├── train/
-  │   ├── dent/
-  │   └── crack/
-  ├── valid/
-  │   ├── dent/
-  │   └── crack/
-  └── test/
-      ├── dent/
-      └── crack/
+| Path | Contents |
+| --- | --- |
+| [Classification and captioning notebook](Aircraft-surface-damage-classification%20%20.ipynb) | Data download, VGG16 training, evaluation, and BLIP experiments |
+| [requirements.txt](requirements.txt) | Python dependencies |
+| [image/](image/) | Example prediction screenshot |
 
-```
----
-## 🧠 Methodology
+## 📊 Evaluation and scope
 
-### 1. **Data Preprocessing**
-- Images of aircraft surfaces are resized and normalized.
-- Labels are encoded into categorical form.
-- Data augmentation techniques (rotation, flipping, etc.) improve model generalization.
+The notebook includes training curves and test evaluation code. A reproducible results report should accompany any published performance figures.
 
-### 2. **Feature Extraction with VGG16**
-- A pretrained **VGG16** network (from ImageNet) is used as a **feature extractor**.
-- The final fully-connected layers are replaced with a custom classifier to distinguish between “Dent” and “Crack”.
+Current points to address in further development:
 
-### 3. **Training and Evaluation**
-- The model is trained using transfer learning to minimize computational cost.
-- Evaluation metrics include **accuracy**, **precision**, **recall**, and **confusion matrix** visualization.
+- Evaluate the complete test set; the current evaluation uses a floor-divided batch count.
+- Add per-class precision/recall, a confusion matrix, and independent checks of generated descriptions.
+- Separate classifier and caption-model variable names for clearer notebook execution.
+- Validate behavior on unfamiliar surfaces, lighting conditions, and damage types.
 
-### 4. **Caption and Summary Generation**
-- A **BLIP Transformer** (Bootstrapped Language Image Pretraining) is used to generate:
-  - A **caption** describing the detected aircraft image.
-  - A **summary** that contextualizes the visual content.
+## 🔭 Next steps
 
----
-
-## 🧩 Technologies Used
-
-| Category | Tools |
-|-----------|--------|
-| Programming | Python, Jupyter Notebook |
-| Deep Learning | TensorFlow / Keras |
-| Vision Models | VGG16 (Pretrained on ImageNet) |
-| Vision-Language Model | BLIP Transformer |
-| Visualization | Matplotlib, Seaborn |
-| Data Handling | NumPy, Pandas |
-
----
-
-## 📊 Results
-
-- Achieved high accuracy in detecting **dents** vs **cracks**.
-- Generated meaningful captions describing aircraft components and visible damage.
-- Created concise summaries integrating both classification and captioning insights.
-
----
-
-## 🖼️ Example Output
-
-Below is an example of the model’s output on an aircraft image:
-
-![Aircraft Damage Example](https://github.com/IBOSS24/Aircraft-Surface-Damage-Classification-and-Captioning/blob/main/image/Dent-predicted%20.png)
-
-**Prediction:** Dent  
-**Caption:** "A close-up view of an aircraft wing with visible dent damage."  
-**Summary:** "this is a detailed photo showing the damage of the nose of a b - 17 bomber, requiring inspection."
-
----
-
-## 📈 Model Performance
-
-### **Classification Results**
-- **Training Accuracy:** ~95%  
-- **Validation Accuracy:** ~93%  
-- **Test Accuracy:** ~91%
-
-### **Training Configuration**
-- **Epochs:** 5  
-- **Batch Size:** 32  
-- **Learning Rate:** 0.0001  
-- **Optimizer:** Adam  
-- **Loss Function:** Binary Crossentropy
-
----
-
-## 🔬 Technical Highlights
-
-### **Transfer Learning Approach**
-- **Frozen Base Model:** VGG16 layers remain frozen to preserve learned ImageNet features  
-- **Custom Classifier:** Two fully-connected layers with dropout for regularization  
-- **Feature Extraction:** Leverages deep convolutional features without retraining  
-
-### **Data Preprocessing**
-- **Image Augmentation:** Rescaling pixel values to [0, 1] range  
-- **Batch Processing:** Efficient data loading with `ImageDataGenerator`  
-- **Consistent Sizing:** All images resized to 224×224 pixels  
-
-### **Custom Keras Layer**
-- **BLIP Integration:** Custom layer wrapping the transformer model  
-- **Task Flexibility:** Single layer handles both captioning and summarization  
-- **TensorFlow Compatible:** Seamless integration with Keras pipelines  
-
----
-
-## 🎓 Learning Outcomes
-
-This project demonstrates proficiency in:
-
-✅ Transfer learning with pretrained CNNs  
-✅ Binary classification for computer vision tasks  
-✅ Model evaluation and visualization  
-✅ Transformer-based image captioning  
-✅ Custom Keras layer implementation  
-✅ Production-ready ML pipeline development  
-
----
-
-## 🔮 Future Enhancements
-- Multi-class classification (more damage types)  
-- Object detection for damage localization  
-- Mobile deployment (TensorFlow Lite)  
-- Real-time video processing  
-- Damage severity estimation  
-- Integration with aircraft maintenance systems  
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-## 📝 License
-
-This project is licensed under the CC BY 4.0 License — see the LICENSE file for details.
-Dataset provided by Roboflow under CC BY 4.0.
-
----
+- Package inference into reusable modules with automated checks.
+- Explore damage localization and additional damage categories.
+- Evaluate domain adaptation for maritime equipment imagery.
+- Investigate deployment after establishing reproducible evaluation.
 
 ## 🙏 Acknowledgments
 
-VGG16: Simonyan & Zisserman (2014)
-
-BLIP: Li et al., Salesforce Research (2022)
-
-Dataset: Roboflow Community
-
-Framework: TensorFlow / Keras Team
+The notebook uses an IBM Skills Network course-hosted aircraft dataset, ImageNet-pretrained VGG16, and Salesforce's BLIP image-captioning model. Check the original data and model terms before redistribution.
 
 ---
-## 📧 Contact
 
-- **Email**: [med.marin17@gmail.com](med.marin17.ad@gmail.com)
-- **LinkedIn**: [linkedin.com/Mohammed](https://www.linkedin.com/in/mohammed-e-a13664182/)
+## 👨‍💻 Author
+
+**Mohammed Badr**  
+State-qualified engineer · Moroccan Royal Navy officer · Building a career in maritime Data Science & ML Engineering
+
+I bring experience at sea and in maritime command centers to my work in applied machine learning. My focus is developing reliable ML systems and applying them to maritime traffic forecasting, vessel behavior analysis, and equipment reliability.
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-173B57?style=flat-square&logo=github&logoColor=white)](https://github.com/IBOSS24/Portfolio_)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mohammed-e-a13664182)
+[![Contact](https://img.shields.io/badge/Contact-Show_details-173B57?style=flat-square&logo=gmail&logoColor=white)](#contact)
+
+<a id="contact"></a>
+
+## 📬 Contact
+
+<details>
+<summary>Show email and contact details</summary>
+
+- **Email:** med.marin17@gmail.com
+- **Gmail:** [Compose an email in Gmail](https://mail.google.com/mail/?view=cm&fs=1&to=med.marin17%40gmail.com)
+- **Mail app:** [med.marin17@gmail.com](mailto:med.marin17@gmail.com)
+- **LinkedIn:** [Mohammed E.](https://www.linkedin.com/in/mohammed-e-a13664182)
+- **GitHub:** [IBOSS24](https://github.com/IBOSS24)
+- **Portfolio:** [View my projects](https://github.com/IBOSS24/Portfolio_)
+
+</details>
